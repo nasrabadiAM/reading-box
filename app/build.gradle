@@ -32,6 +32,7 @@ android {
         targetSdkVersion build_versions.target_sdk
         versionCode 1
         versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -51,7 +52,11 @@ dependencies {
     implementation deps.kotlin.stdlib
     implementation deps.support.app_compat
     implementation deps.constraint_layout
+
     testImplementation deps.junit
+    androidTestImplementation deps.support.annotations
     androidTestImplementation deps.atsl.runner
+    androidTestImplementation deps.atsl.rules
     androidTestImplementation deps.espresso.core
+    androidTestImplementation deps.robolectric.core
 }

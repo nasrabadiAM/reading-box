@@ -18,13 +18,16 @@
 
 package com.nasrabadiam.readingbox
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val intent = ArticleActivity.getCallingIntent(this,
+                "http://limoocode.ir/%D8%A2%D9%85%D9%88%D8%B2%D8%B4-%D8%A7%D8%B3%D8%AA%D9%81%D8%A7%D8%AF%D9%87-%D8%A7%D8%B2-floatingactionbutton-%D9%87%D9%85%D8%B1%D8%A7%D9%87-%D8%A8%D8%A7-recyclerview/")
+        startActivity(intent)
     }
 }
