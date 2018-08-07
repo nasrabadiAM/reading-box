@@ -29,6 +29,7 @@ versions.support = "28.0.0-beta01"
 versions.dagger = "2.15"
 versions.junit = "4.12"
 versions.espresso = "3.0.1"
+versions.robolectric = "3.8"
 versions.retrofit = "2.3.0"
 versions.okhttp_logging_interceptor = "3.9.0"
 versions.mockwebserver = "3.8.1"
@@ -100,6 +101,10 @@ espresso.core = "com.android.support.test.espresso:espresso-core:$versions.espre
 espresso.contrib = "com.android.support.test.espresso:espresso-contrib:$versions.espresso"
 espresso.intents = "com.android.support.test.espresso:espresso-intents:$versions.espresso"
 deps.espresso = espresso
+
+def robolectric = [:]
+robolectric.core = "org.robolectric:robolectric:$versions.robolectric"
+deps.robolectric = robolectric
 
 def atsl = [:]
 atsl.runner = "com.android.support.test:runner:$versions.atsl_runner"
