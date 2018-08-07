@@ -25,6 +25,8 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
@@ -36,11 +38,10 @@ import android.widget.ProgressBar
 
 class ArticleActivity : AppCompatActivity() {
 
-    val TAG = "ArticleActivity"
-
     private lateinit var articleView: WebView
     private lateinit var progressbar: ProgressBar
     private lateinit var retryButton: ImageButton
+    private lateinit var url: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +50,7 @@ class ArticleActivity : AppCompatActivity() {
         progressbar = findViewById(R.id.progressbar)
         retryButton = findViewById(R.id.failed_retry)
 
-        val url = intent.extras.getString(URL_INPUT_KEY)
+        url = intent.extras.getString(URL_INPUT_KEY)
 
         initialize(url)
     }
@@ -101,6 +102,32 @@ class ArticleActivity : AppCompatActivity() {
         }
 
         articleView.webViewClient = webViewClient
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.article_view, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.refresh -> {
+                refreshArticleView(url)
+                true
+            }
+            R.id.bookmark -> {
+                //TODO: bookmark this article
+                true
+            }
+            else -> false
+        }
+    }
+
+
+    fun refreshArticleView(url: String) {
+        articleView.loadUrl(url)
     }
 
     fun showLoading() {

@@ -54,7 +54,9 @@ dependencies {
     implementation deps.constraint_layout
 
     testImplementation deps.junit
+    androidTestImplementation deps.support.annotations
     androidTestImplementation deps.atsl.runner
+    androidTestImplementation deps.atsl.rules
     androidTestImplementation deps.espresso.core
-    androidTestImplementation deps.robo_electric.core
+    androidTestImplementation deps.robolectric.core
 }
