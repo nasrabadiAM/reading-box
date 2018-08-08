@@ -52,15 +52,24 @@ class ArticleActivity : AppCompatActivity() {
 
         url = intent.extras.getString(URL_INPUT_KEY)
 
-        initialize(url)
+        if (savedInstanceState == null) {
+            initialize()
+            loadArticleUrl(url)
+        } else {
+            initialize()
+            articleView.restoreState(savedInstanceState)
+        }
     }
 
-    private fun initialize(url: String) {
+    override fun onSaveInstanceState(outState: Bundle?) {
+        articleView.saveState(outState)
+        super.onSaveInstanceState(outState)
+    }
+
+    private fun initialize() {
 
         @SuppressLint("SetJavaScriptEnabled")
         articleView.settings.javaScriptEnabled = true
-
-        articleView.loadUrl(url)
 
         val webViewClient: WebViewClient = object : WebViewClient() {
 
@@ -104,6 +113,9 @@ class ArticleActivity : AppCompatActivity() {
         articleView.webViewClient = webViewClient
     }
 
+    private fun loadArticleUrl(url: String) {
+        articleView.loadUrl(url)
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
@@ -126,8 +138,8 @@ class ArticleActivity : AppCompatActivity() {
     }
 
 
-    fun refreshArticleView(url: String) {
-        articleView.loadUrl(url)
+    private fun refreshArticleView(url: String) {
+        loadArticleUrl(url)
     }
 
     fun showLoading() {
@@ -162,6 +174,5 @@ class ArticleActivity : AppCompatActivity() {
             return intent.putExtra(URL_INPUT_KEY, url)
         }
     }
-
 
 }
