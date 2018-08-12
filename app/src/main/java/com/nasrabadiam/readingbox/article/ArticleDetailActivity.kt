@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nasrabadiam.readingbox
+package com.nasrabadiam.readingbox.article
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -34,9 +34,10 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ImageButton
 import android.widget.ProgressBar
+import com.nasrabadiam.readingbox.R
 
 
-class ArticleActivity : AppCompatActivity() {
+class ArticleDetailActivity : AppCompatActivity() {
 
     private lateinit var articleView: WebView
     private lateinit var progressbar: ProgressBar
@@ -170,7 +171,7 @@ class ArticleActivity : AppCompatActivity() {
         const val URL_INPUT_KEY = "url"
 
         fun getCallingIntent(context: Context, url: String): Intent {
-            val intent = Intent(context, ArticleActivity::class.java)
+            val intent = Intent(context, ArticleDetailActivity::class.java)
             return intent.putExtra(URL_INPUT_KEY, url)
         }
     }
