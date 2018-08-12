@@ -19,6 +19,7 @@
 package com.nasrabadiam.readingbox.article.articleList
 
 import com.nasrabadiam.readingbox.article.Article
+import com.nasrabadiam.readingbox.article.Enclosure
 
 class ArticleListPresenter : ArticleListContract.Presenter {
 
@@ -28,10 +29,10 @@ class ArticleListPresenter : ArticleListContract.Presenter {
         this.view = view
     }
 
+    //TODO: should implement this method
     override fun getAllArticles() {
         val item1 = Article(1, "title", link = "https://www.google.com",
-                guid = "https://www.google.com")
+                guid = "https://www.google.com", description = "bla bla bla bla bla blabla blabla blavbla blavvvv v", enclosure = Enclosure("https://avatars0.githubusercontent.com/u/31126059?s=400&v=4", "image/jpg"))
         view.showArticles(listOf(item1))
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

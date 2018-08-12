@@ -19,8 +19,9 @@
 package com.nasrabadiam.readingbox
 
 import android.widget.ImageView
+import com.squareup.picasso.Picasso
 
 fun ImageView.loadUrl(url: String) {
-    throw NotImplementedError("this section doesn't implemented yet${this::class}")
-    TODO("Implement Glide image loading system here")
+    val picasso = Picasso.Builder(this.context).build()
+    picasso.load(url).into(this)
 }
