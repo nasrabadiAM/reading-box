@@ -37,15 +37,20 @@ class ArticleAdapter : RecyclerView.Adapter<ArticleItemViewHolder>() {
             notifyDataSetChanged()
         }
 
+    var clickListener: OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleItemViewHolder {
-        return ArticleItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.article_list_item, parent, false))
+        return ArticleItemViewHolder(LayoutInflater.from(parent.context)
+                .inflate(R.layout.article_list_item, parent, false))
     }
 
     override fun onBindViewHolder(holder: ArticleItemViewHolder, position: Int) {
         holder.title.text = items[position].title
         holder.summary.text = items[position].description
         holder.image.loadUrl(items[position].enclosure.url)
+        holder.parent.setOnClickListener {
+            clickListener?.onClick(holder.parent, items[position])
+        }
     }
 
     override fun getItemCount(): Int {
@@ -58,5 +63,10 @@ class ArticleItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val title: TextView = view.findViewById(R.id.title)
     val summary: TextView = view.findViewById(R.id.summary)
     val image: ImageView = view.findViewById(R.id.image)
+    val parent: ViewGroup = view.findViewById(R.id.parent)
 }
 
+
+public interface OnItemClickListener{
+    public fun onClick(view: View, article: Article)
+}

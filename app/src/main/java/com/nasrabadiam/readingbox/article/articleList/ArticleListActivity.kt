@@ -20,12 +20,15 @@ package com.nasrabadiam.readingbox.article.articleList
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.widget.FrameLayout
 import com.nasrabadiam.readingbox.R
 
 class ArticleListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_container)
+
+        val frameLayout = findViewById<FrameLayout>(R.id.frame_layout)
 
         val articleListFragment = ArticleListFragment.getForAll()
         val fragmentTransaction = this.supportFragmentManager.beginTransaction()

@@ -27,6 +27,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.nasrabadiam.readingbox.R
 import com.nasrabadiam.readingbox.article.Article
+import com.nasrabadiam.readingbox.article.ArticleDetailActivity
 
 class ArticleListFragment : Fragment(), ArticleListContract.View {
 
@@ -40,6 +41,13 @@ class ArticleListFragment : Fragment(), ArticleListContract.View {
         presenter.setView(this)
         adapter = ArticleAdapter()
         presenter.getAllArticles()
+        adapter.clickListener = object : OnItemClickListener {
+            override fun onClick(view: View, article: Article) {
+                val intent =
+                        ArticleDetailActivity.getCallingIntent(activity!!, article.link)
+                startActivity(intent)
+            }
+        }
     }
 
 
