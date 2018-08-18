@@ -25,31 +25,36 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.nasrabadiam.readingbox.R
-import com.nasrabadiam.readingbox.article.Article
+import com.nasrabadiam.readingbox.ReadingBoxApplication
 import com.nasrabadiam.readingbox.article.ArticleDetailActivity
+import com.nasrabadiam.readingbox.article.ArticleViewModel
+import javax.inject.Inject
 
 class ArticleListFragment : Fragment(), ArticleListContract.View {
 
-    private lateinit var presenter: ArticleListContract.Presenter
-    private lateinit var adapter: ArticleAdapter
+    @Inject
+    lateinit var presenter: ArticleListContract.Presenter
+
+    private val adapter: ArticleAdapter = ArticleAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = ArticleListPresenter()
+        (activity?.application as ReadingBoxApplication)
+                .appComponent.inject(this)
+
         presenter.setView(this)
-        adapter = ArticleAdapter()
         presenter.getAllArticles()
         adapter.clickListener = object : OnItemClickListener {
-            override fun onClick(view: View, article: Article) {
+            override fun onClick(view: View, article: ArticleViewModel) {
                 val intent =
                         ArticleDetailActivity.getCallingIntent(activity!!, article.link)
                 startActivity(intent)
             }
         }
     }
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.recycler_layout, container)
@@ -60,10 +65,22 @@ class ArticleListFragment : Fragment(), ArticleListContract.View {
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-    override fun showArticles(articles: List<Article>) {
+    fun addArticle(link: String) {
+        presenter.addArticle(link)
+    }
+
+
+    override fun showArticles(articles: List<ArticleViewModel>) {
         adapter.items = articles
     }
 
+    override fun articleAddedSuccessfully() {
+        Toast.makeText(activity, getString(R.string.article_added_successfully), Toast.LENGTH_SHORT).show()
+    }
+
+    override fun articleAddFailed() {
+        Toast.makeText(activity, getString(R.string.article_add_failed), Toast.LENGTH_SHORT).show()
+    }
 
     companion object {
         fun getForAll(): ArticleListFragment {

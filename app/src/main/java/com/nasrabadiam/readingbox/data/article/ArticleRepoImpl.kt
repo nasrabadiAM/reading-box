@@ -16,21 +16,28 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nasrabadiam.readingbox.article.articleList
+package com.nasrabadiam.readingbox.data.article
 
-import com.nasrabadiam.readingbox.BaseContract
-import com.nasrabadiam.readingbox.article.ArticleViewModel
+import com.nasrabadiam.readingbox.article.domain.Article
+import com.nasrabadiam.readingbox.data.db.AppDatabase
+import com.nasrabadiam.readingbox.data.db.article.ArticleEntity
 
-interface ArticleListContract {
+class ArticleRepoImpl(private val appDatabase: AppDatabase) : ArticleRepo {
 
-    interface View : BaseContract.View {
-        fun showArticles(articles: List<ArticleViewModel>)
-        fun articleAddedSuccessfully()
-        fun articleAddFailed()
+
+    override fun getAll(): List<Article> {
+        return appDatabase.articleDao()
+                .getAllArticles().map { ArticleConverter.getDomainVersion(it) }
     }
 
-    interface Presenter : BaseContract.Presenter<ArticleListContract.View> {
-        fun getAllArticles()
-        fun addArticle(link: String)
+    override fun get(id: Int): Article {
+        return ArticleConverter.getDomainVersion(
+                appDatabase.articleDao().getArticle(id))
     }
+
+    override fun addArticle(link: String): Boolean {
+        appDatabase.articleDao().addArticle(ArticleEntity(link = link))
+        return true
+    }
+
 }

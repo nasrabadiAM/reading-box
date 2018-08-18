@@ -25,13 +25,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.nasrabadiam.readingbox.R
-import com.nasrabadiam.readingbox.article.Article
+import com.nasrabadiam.readingbox.article.ArticleViewModel
 import com.nasrabadiam.readingbox.loadUrl
 import java.util.*
 
 class ArticleAdapter : RecyclerView.Adapter<ArticleItemViewHolder>() {
 
-    var items: List<Article> = Collections.emptyList()
+    var items: List<ArticleViewModel> = Collections.emptyList()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -68,5 +68,5 @@ class ArticleItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
 
 public interface OnItemClickListener{
-    public fun onClick(view: View, article: Article)
+    public fun onClick(view: View, article: ArticleViewModel)
 }

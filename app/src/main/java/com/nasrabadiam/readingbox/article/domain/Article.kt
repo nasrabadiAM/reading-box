@@ -16,21 +16,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nasrabadiam.readingbox.article.articleList
+package com.nasrabadiam.readingbox.article.domain
 
-import com.nasrabadiam.readingbox.BaseContract
-import com.nasrabadiam.readingbox.article.ArticleViewModel
+import java.util.*
 
-interface ArticleListContract {
-
-    interface View : BaseContract.View {
-        fun showArticles(articles: List<ArticleViewModel>)
-        fun articleAddedSuccessfully()
-        fun articleAddFailed()
-    }
-
-    interface Presenter : BaseContract.Presenter<ArticleListContract.View> {
-        fun getAllArticles()
-        fun addArticle(link: String)
-    }
-}
+data class Article(val id: Int, val title: String, val link: String,
+                   val description: String = "", val author: String = "",
+                   val category: String = "", val comments: String = "",
+                   val enclosure: Enclosure = Enclosure(), val guid: String,
+                   val pubDate: Date = Date(), val source: String = "")

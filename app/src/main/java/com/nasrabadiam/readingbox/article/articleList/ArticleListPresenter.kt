@@ -18,10 +18,12 @@
 
 package com.nasrabadiam.readingbox.article.articleList
 
-import com.nasrabadiam.readingbox.article.Article
-import com.nasrabadiam.readingbox.article.Enclosure
+import com.nasrabadiam.readingbox.article.ArticleConverter
+import com.nasrabadiam.readingbox.article.domain.ArticleModel
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.launch
 
-class ArticleListPresenter : ArticleListContract.Presenter {
+class ArticleListPresenter(val article: ArticleModel) : ArticleListContract.Presenter {
 
     private lateinit var view: ArticleListContract.View
 
@@ -29,10 +31,23 @@ class ArticleListPresenter : ArticleListContract.Presenter {
         this.view = view
     }
 
-    //TODO: should implement this method
     override fun getAllArticles() {
-        val item1 = Article(1, "title", link = "https://www.google.com",
-                guid = "https://www.google.com", description = "bla bla bla bla bla blabla blabla blavbla blavvvv v", enclosure = Enclosure("https://avatars0.githubusercontent.com/u/31126059?s=400&v=4", "image/jpg"))
-        view.showArticles(listOf(item1))
+        launch {
+            val articles = article.getAll().map {
+                ArticleConverter.getViewVersion(it)
+            }
+            view.showArticles(articles)
+        }
     }
+
+    override fun addArticle(link: String) {
+        launch {
+            val result = article.addArticle(link)
+            launch(UI) {
+                if (result) view.articleAddedSuccessfully()
+                else view.articleAddFailed()
+            }
+        }
+    }
+
 }

@@ -22,6 +22,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion build_versions.target_sdk
     buildToolsVersion build_versions.build_tools
@@ -34,6 +36,16 @@ android {
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+        kotlin {
+            experimental {
+                coroutines "enable"
+            }
+        }
     }
     buildTypes {
         release {
@@ -48,12 +60,32 @@ android {
     }
 }
 
+kapt {
+    generateStubs = true
+}
+
 dependencies {
     implementation deps.kotlin.stdlib
     implementation deps.support.app_compat
     implementation deps.constraint_layout
     implementation deps.support.recyclerview
+    implementation deps.support.design
     implementation deps.picasso
+
+    //Room ORM
+    implementation deps.room.runtime
+    kapt deps.room.compiler
+    implementation deps.room.testing
+
+    implementation deps.kotlin.stdlib
+
+    //coroutines
+    implementation deps.coroutines.core
+    implementation deps.coroutines.android
+
+    //Dagger 2
+    implementation deps.dagger.runtime
+    kapt deps.dagger.compiler
 
     testImplementation deps.junit
     androidTestImplementation deps.support.annotations

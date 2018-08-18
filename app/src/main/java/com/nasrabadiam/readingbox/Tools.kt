@@ -18,10 +18,20 @@
 
 package com.nasrabadiam.readingbox
 
+import android.util.Patterns
 import android.widget.ImageView
 import com.squareup.picasso.Picasso
 
+
 fun ImageView.loadUrl(url: String) {
+    if (url.isEmpty()) return
     val picasso = Picasso.Builder(this.context).build()
     picasso.load(url).into(this)
+}
+
+
+fun String.isUrlValid(): Boolean {
+    val p = Patterns.WEB_URL
+    val m = p.matcher(this.toLowerCase())
+    return m.matches()
 }

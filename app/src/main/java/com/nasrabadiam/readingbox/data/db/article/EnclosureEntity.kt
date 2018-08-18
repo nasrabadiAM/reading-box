@@ -16,21 +16,9 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nasrabadiam.readingbox.article.articleList
+package com.nasrabadiam.readingbox.data.db.article
 
-import com.nasrabadiam.readingbox.BaseContract
-import com.nasrabadiam.readingbox.article.ArticleViewModel
+import android.arch.persistence.room.ColumnInfo
 
-interface ArticleListContract {
-
-    interface View : BaseContract.View {
-        fun showArticles(articles: List<ArticleViewModel>)
-        fun articleAddedSuccessfully()
-        fun articleAddFailed()
-    }
-
-    interface Presenter : BaseContract.Presenter<ArticleListContract.View> {
-        fun getAllArticles()
-        fun addArticle(link: String)
-    }
-}
+data class EnclosureEntity(@ColumnInfo(name = "encl_url")  var url: String = "",
+                           @ColumnInfo(name = "encl_type")  var type: String = "")

@@ -16,11 +16,13 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nasrabadiam.readingbox
+package com.nasrabadiam.readingbox.article.domain
 
-import android.arch.lifecycle.ViewModel
+interface ArticleModel {
 
-class ArticleViewModel : ViewModel() {
+    fun getAll(): List<Article>
 
+    fun get(id: Int): Article
 
+    fun addArticle(link: String): Boolean
 }

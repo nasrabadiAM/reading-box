@@ -16,21 +16,17 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nasrabadiam.readingbox.article.articleList
+package com.nasrabadiam.readingbox.di
 
-import com.nasrabadiam.readingbox.BaseContract
-import com.nasrabadiam.readingbox.article.ArticleViewModel
+import com.nasrabadiam.readingbox.article.articleList.ArticleListFragment
+import dagger.Component
+import javax.inject.Singleton
 
-interface ArticleListContract {
 
-    interface View : BaseContract.View {
-        fun showArticles(articles: List<ArticleViewModel>)
-        fun articleAddedSuccessfully()
-        fun articleAddFailed()
-    }
+@Singleton
+@Component(modules = [AppModule::class])
+interface AppComponent {
 
-    interface Presenter : BaseContract.Presenter<ArticleListContract.View> {
-        fun getAllArticles()
-        fun addArticle(link: String)
-    }
+    fun inject(target: ArticleListFragment)
+
 }

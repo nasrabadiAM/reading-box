@@ -16,21 +16,23 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nasrabadiam.readingbox.article.articleList
+package com.nasrabadiam.readingbox.data.db.article
 
-import com.nasrabadiam.readingbox.BaseContract
-import com.nasrabadiam.readingbox.article.ArticleViewModel
+import android.arch.persistence.room.Dao
+import android.arch.persistence.room.Insert
+import android.arch.persistence.room.OnConflictStrategy
+import android.arch.persistence.room.Query
 
-interface ArticleListContract {
+@Dao
+interface ArticleDao {
 
-    interface View : BaseContract.View {
-        fun showArticles(articles: List<ArticleViewModel>)
-        fun articleAddedSuccessfully()
-        fun articleAddFailed()
-    }
+    @Query("SELECT * FROM article")
+    fun getAllArticles(): List<ArticleEntity>
 
-    interface Presenter : BaseContract.Presenter<ArticleListContract.View> {
-        fun getAllArticles()
-        fun addArticle(link: String)
-    }
+
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    fun addArticle(vararg articles: ArticleEntity)
+
+    @Query("SELECT * FROM article WHERE :id=_id")
+    fun getArticle(id: Int): ArticleEntity
 }

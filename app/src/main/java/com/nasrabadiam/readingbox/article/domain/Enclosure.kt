@@ -16,6 +16,6 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nasrabadiam.readingbox.article
+package com.nasrabadiam.readingbox.article.domain
 
 data class Enclosure(val url: String = "", val type: String = "")

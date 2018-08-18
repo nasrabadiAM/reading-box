@@ -16,21 +16,19 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nasrabadiam.readingbox.article.articleList
+package com.nasrabadiam.readingbox.article
 
-import com.nasrabadiam.readingbox.BaseContract
-import com.nasrabadiam.readingbox.article.ArticleViewModel
+import com.nasrabadiam.readingbox.article.domain.Article
 
-interface ArticleListContract {
+class ArticleConverter {
+    companion object {
+        fun getDomainVersion(a: ArticleViewModel): Article {
+            return Article(id = a.id, title = a.title, link = a.link,
+                    description = a.description, guid = a.guid)
+        }
 
-    interface View : BaseContract.View {
-        fun showArticles(articles: List<ArticleViewModel>)
-        fun articleAddedSuccessfully()
-        fun articleAddFailed()
-    }
-
-    interface Presenter : BaseContract.Presenter<ArticleListContract.View> {
-        fun getAllArticles()
-        fun addArticle(link: String)
+        fun getViewVersion(a: Article): ArticleViewModel {
+            return ArticleViewModel(id = a.id, title = a.title, link = a.link, description = a.description, guid = a.guid)
+        }
     }
 }

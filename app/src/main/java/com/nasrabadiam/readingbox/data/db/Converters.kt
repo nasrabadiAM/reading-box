@@ -16,11 +16,21 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nasrabadiam.readingbox.article
+package com.nasrabadiam.readingbox.data.db
 
+import android.arch.persistence.room.TypeConverter
 import java.util.*
 
-data class Article(val id: Int, val title: String, val link: String,
-                   val description: String = "", val author: String = "", val category: String = "",
-                   val comments: String = "", val enclosure: Enclosure = Enclosure(), val guid: String, val pubDate: Date = Date(),
-                   val source: String = "")
+class Converters {
+
+    @TypeConverter
+    fun fromTimestamp(value: Long?): Date? {
+        return if (value == null) null else Date(value)
+    }
+
+    @TypeConverter
+    fun dateToTimestamp(date: Date?): Long? {
+        return date?.time
+    }
+
+}

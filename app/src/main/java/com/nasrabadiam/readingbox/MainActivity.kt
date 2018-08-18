@@ -19,6 +19,7 @@
 package com.nasrabadiam.readingbox
 
 import android.os.Bundle
+import android.support.annotation.MainThread
 import android.support.v7.app.AppCompatActivity
 import com.nasrabadiam.readingbox.article.ArticleDetailActivity
 

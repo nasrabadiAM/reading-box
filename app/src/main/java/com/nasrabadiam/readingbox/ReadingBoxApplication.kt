@@ -16,21 +16,26 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nasrabadiam.readingbox.article.articleList
+package com.nasrabadiam.readingbox
 
-import com.nasrabadiam.readingbox.BaseContract
-import com.nasrabadiam.readingbox.article.ArticleViewModel
+import android.app.Application
+import com.nasrabadiam.readingbox.di.AppComponent
+import com.nasrabadiam.readingbox.di.AppModule
+import com.nasrabadiam.readingbox.di.DaggerAppComponent
 
-interface ArticleListContract {
+class ReadingBoxApplication : Application() {
 
-    interface View : BaseContract.View {
-        fun showArticles(articles: List<ArticleViewModel>)
-        fun articleAddedSuccessfully()
-        fun articleAddFailed()
+    lateinit var appComponent: AppComponent
+
+    override fun onCreate() {
+        super.onCreate()
+        initializeInjector()
     }
 
-    interface Presenter : BaseContract.Presenter<ArticleListContract.View> {
-        fun getAllArticles()
-        fun addArticle(link: String)
+    private fun initializeInjector() {
+        appComponent = DaggerAppComponent.builder()
+                .appModule(AppModule(this))
+                .build()
     }
+
 }
