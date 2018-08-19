@@ -16,20 +16,29 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nasrabadiam.readingbox.article
+package com.nasrabadiam.readingbox;
 
-import com.nasrabadiam.readingbox.article.domain.Article
+import android.support.test.runner.AndroidJUnit4;
 
-class ArticleConverter {
-    companion object {
-        fun getDomainVersion(a: ArticleViewModel): Article {
-            return Article(id = a.id, title = a.title, link = a.link,
-                    description = a.description, guid = a.guid)
-        }
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-        fun getViewVersion(a: Article): ArticleViewModel {
-            return ArticleViewModel(id = a.id, title = a.title, link = a.link,
-                    description = a.description, guid = a.guid)
-        }
+@RunWith(AndroidJUnit4.class)
+public class ToolsTest {
+
+    private static final String validUrl = "http://google.com";
+    private static final String inValidUrl = "bla bla";
+
+    @Test
+    public static void testCorrectUrlIsValid() {
+        boolean result = ToolsKt.isUrlValid(validUrl);
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public static void testInCorrectUrlIsInValid() {
+        boolean result = ToolsKt.isUrlValid(inValidUrl);
+        Assert.assertFalse(result);
     }
 }

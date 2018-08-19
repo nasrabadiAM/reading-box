@@ -32,10 +32,11 @@ import com.nasrabadiam.readingbox.isUrlValid
 import kotlinx.coroutines.experimental.launch
 
 
-lateinit var articleListFragment: ArticleListFragment
-lateinit var mBottomSheetBehavior: BottomSheetBehavior<View>
-
 class ArticleListActivity : AppCompatActivity() {
+
+    private lateinit var articleListFragment: ArticleListFragment
+    private lateinit var mBottomSheetBehavior: BottomSheetBehavior<View>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_container)
@@ -89,6 +90,9 @@ class ArticleListActivity : AppCompatActivity() {
             Toast.makeText(this.applicationContext, getString(R.string.url_is_not_valid), Toast.LENGTH_SHORT).show()
             return
         }
+
+        //TODO: should get url data here and then add all of them to the repository
+
         launch {
             articleListFragment.addArticle(link)
         }

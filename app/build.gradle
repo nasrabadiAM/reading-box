@@ -65,19 +65,20 @@ kapt {
 }
 
 dependencies {
+    //ui
     implementation deps.kotlin.stdlib
     implementation deps.support.app_compat
     implementation deps.constraint_layout
     implementation deps.support.recyclerview
     implementation deps.support.design
+
+    //image loading
     implementation deps.picasso
 
     //Room ORM
     implementation deps.room.runtime
     kapt deps.room.compiler
     implementation deps.room.testing
-
-    implementation deps.kotlin.stdlib
 
     //coroutines
     implementation deps.coroutines.core
@@ -87,6 +88,13 @@ dependencies {
     implementation deps.dagger.runtime
     kapt deps.dagger.compiler
 
+    //web request
+    implementation deps.retrofit.runtime
+    implementation deps.retrofit.gson
+    implementation deps.retrofit.mock
+    implementation deps.okhttp_logging_interceptor
+
+    //testing
     testImplementation deps.junit
     androidTestImplementation deps.support.annotations
     androidTestImplementation deps.atsl.runner
