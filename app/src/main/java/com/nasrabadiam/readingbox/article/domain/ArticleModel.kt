@@ -24,5 +24,5 @@ interface ArticleModel {
 
     fun get(id: Int): Article
 
-    fun addArticle(link: String): Boolean
+    fun addArticle(link: String,callback: CallBack<Article>)
 }

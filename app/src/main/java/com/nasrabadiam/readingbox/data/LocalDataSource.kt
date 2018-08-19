@@ -16,22 +16,10 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nasrabadiam.readingbox.data.db.article
+package com.nasrabadiam.readingbox.data
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.OnConflictStrategy
-import android.arch.persistence.room.Query
+import android.content.SharedPreferences
+import com.nasrabadiam.readingbox.data.db.AppDatabase
 
-@Dao
-interface ArticleDao {
-
-    @Query("SELECT * FROM article ORDER BY pub_date DESC")
-    fun getAllArticles(): List<ArticleEntity>
-
-    @Insert(onConflict = OnConflictStrategy.ABORT)
-    fun addArticle(vararg articles: ArticleEntity)
-
-    @Query("SELECT * FROM article WHERE :id=_id")
-    fun getArticle(id: Int): ArticleEntity
-}
+class LocalDataSource(val appDatabase: AppDatabase,
+                      val sharedPreferences: SharedPreferences)

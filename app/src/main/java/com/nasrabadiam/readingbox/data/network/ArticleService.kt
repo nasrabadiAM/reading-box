@@ -16,22 +16,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nasrabadiam.readingbox.data.db.article
+package com.nasrabadiam.readingbox.data.network
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.OnConflictStrategy
-import android.arch.persistence.room.Query
+import retrofit2.Call
+import retrofit2.http.GET
+import retrofit2.http.Query
 
-@Dao
-interface ArticleDao {
+interface ArticleService {
 
-    @Query("SELECT * FROM article ORDER BY pub_date DESC")
-    fun getAllArticles(): List<ArticleEntity>
-
-    @Insert(onConflict = OnConflictStrategy.ABORT)
-    fun addArticle(vararg articles: ArticleEntity)
-
-    @Query("SELECT * FROM article WHERE :id=_id")
-    fun getArticle(id: Int): ArticleEntity
+    @GET("parser")
+    fun getArticleDetails(@Query("url") url: String): Call<MercuryArticle>
 }

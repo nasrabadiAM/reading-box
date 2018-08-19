@@ -26,17 +26,21 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.Toast
 import com.nasrabadiam.readingbox.R
 import com.nasrabadiam.readingbox.isUrlValid
-import kotlinx.coroutines.experimental.launch
 
 
-class ArticleListActivity : AppCompatActivity() {
+class ArticleListActivity : AppCompatActivity(), ArticleListContract.Activity {
 
     private lateinit var articleListFragment: ArticleListFragment
-    private lateinit var mBottomSheetBehavior: BottomSheetBehavior<View>
 
+    private lateinit var mBottomSheetBehavior: BottomSheetBehavior<View>
+    private lateinit var linkEdt: EditText
+
+    private lateinit var addArticleBtn: Button
+    private lateinit var progressbar: ProgressBar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_container)
@@ -62,11 +66,11 @@ class ArticleListActivity : AppCompatActivity() {
 
     }
 
-
     private fun initializeBottomSheet() {
         val bottomSheet = findViewById<View>(R.id.bottom_sheet)
-        val addArticleBtn = findViewById<View>(R.id.add_article) as Button
-        val linkEdt = findViewById<View>(R.id.link_edt) as EditText
+        addArticleBtn = findViewById<View>(R.id.add_article) as Button
+        linkEdt = findViewById<View>(R.id.link_edt) as EditText
+        progressbar = findViewById<View>(R.id.progressbar) as ProgressBar
         addArticleBtn.setOnClickListener {
             addArticle(linkEdt.text.toString())
         }
@@ -90,12 +94,24 @@ class ArticleListActivity : AppCompatActivity() {
             Toast.makeText(this.applicationContext, getString(R.string.url_is_not_valid), Toast.LENGTH_SHORT).show()
             return
         }
+        showLoading()
+        articleListFragment.addArticle(link)
+    }
 
-        //TODO: should get url data here and then add all of them to the repository
+    override fun showLoading() {
+        linkEdt.visibility = View.GONE
+        addArticleBtn.visibility = View.GONE
+        progressbar.visibility = View.VISIBLE
+    }
 
-        launch {
-            articleListFragment.addArticle(link)
-        }
+    override fun hideLoading() {
+        linkEdt.visibility = View.VISIBLE
+        addArticleBtn.visibility = View.VISIBLE
+        progressbar.visibility = View.GONE
         mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+    }
+
+    override fun clearUrlEditText() {
+        linkEdt.setText("")
     }
 }

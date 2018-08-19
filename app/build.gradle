@@ -60,6 +60,7 @@ android {
     }
 }
 
+//add this for make dagger work correctly with kotlin, it enables kotlin code generator
 kapt {
     generateStubs = true
 }

@@ -19,36 +19,42 @@
 package com.nasrabadiam.readingbox.data.article
 
 import com.nasrabadiam.readingbox.article.domain.Article
-import com.nasrabadiam.readingbox.article.domain.Enclosure
 import com.nasrabadiam.readingbox.data.db.article.ArticleEntity
-import com.nasrabadiam.readingbox.data.db.article.EnclosureEntity
+import com.nasrabadiam.readingbox.data.network.MercuryArticle
 
 class ArticleConverter {
 
     companion object {
 
-        fun getDomainVersion(a: ArticleEntity): Article {
+        fun getDomainFromDb(a: ArticleEntity): Article {
             return Article(id = a.id, title = a.title, link = a.link,
                     description = a.description, author = a.author,
                     category = a.category, comments = a.comments,
-                    enclosure = getDomainEnclosure(a.enclosure), guid = a.guid,
+                    baseImageUrl = a.baseImageUrl, guid = a.guid,
                     pubDate = a.pubDate, source = a.source)
         }
 
-        fun getDbVersion(a: Article): ArticleEntity {
+        fun getDbFromDomain(a: Article): ArticleEntity {
             return ArticleEntity(id = a.id, title = a.title, link = a.link,
                     description = a.description, author = a.author,
                     category = a.category, comments = a.comments,
-                    enclosure = getDbEnclosure(a.enclosure), guid = a.guid,
+                    baseImageUrl = a.baseImageUrl, guid = a.guid,
                     pubDate = a.pubDate, source = a.source)
         }
 
-        fun getDomainEnclosure(a: EnclosureEntity): Enclosure {
-            return Enclosure(url = a.url, type = a.type)
+        fun getDbFromMercury(a: MercuryArticle): ArticleEntity {
+            val direction = when {
+                a.direction == "ltr" -> 0
+                a.direction == "rtl" -> 1
+                else -> -1
+            }
+            return ArticleEntity(title = a.title, link = a.url,
+                    description = a.excerpt, conents = a.content,
+                    baseImageUrl = a.leadImageUrl, guid = a.url,
+                    pubDate = a.pubDate, source = a.domain,
+                    layoutDirection = direction, wordCount = a.word_count)
+
         }
 
-        fun getDbEnclosure(a: Enclosure): EnclosureEntity {
-            return EnclosureEntity(url = a.url, type = a.type)
-        }
     }
 }

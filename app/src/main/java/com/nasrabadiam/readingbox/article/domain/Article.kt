@@ -23,5 +23,5 @@ import java.util.*
 data class Article(val id: Int, val title: String, val link: String,
                    val description: String = "", val author: String = "",
                    val category: String = "", val comments: String = "",
-                   val enclosure: Enclosure = Enclosure(), val guid: String,
+                   val baseImageUrl: String = "", val guid: String,
                    val pubDate: Date = Date(), val source: String = "")

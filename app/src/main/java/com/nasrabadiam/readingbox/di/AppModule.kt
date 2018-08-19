@@ -19,15 +19,17 @@
 package com.nasrabadiam.readingbox.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import com.nasrabadiam.readingbox.ReadingBoxApplication
 import com.nasrabadiam.readingbox.article.articleList.ArticleListContract
 import com.nasrabadiam.readingbox.article.articleList.ArticleListPresenter
 import com.nasrabadiam.readingbox.article.domain.ArticleModel
 import com.nasrabadiam.readingbox.article.domain.ArticleModelImpl
+import com.nasrabadiam.readingbox.data.LocalDataSource
+import com.nasrabadiam.readingbox.data.RemoteDataSource
 import com.nasrabadiam.readingbox.data.Repository
-import com.nasrabadiam.readingbox.data.article.ArticleRepo
-import com.nasrabadiam.readingbox.data.article.ArticleRepoImpl
 import com.nasrabadiam.readingbox.data.db.AppDatabase
+import com.nasrabadiam.readingbox.data.network.ReadingBoxRemoteDataServiceProvider
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -46,17 +48,35 @@ class AppModule(private val application: ReadingBoxApplication) {
         return AppDatabase.getInstance(context)
     }
 
-
     @Provides
     @Singleton
-    internal fun provideArticleRepo(appDatabase: AppDatabase): ArticleRepo {
-        return ArticleRepoImpl(appDatabase)
+    internal fun provideSharedPreferences(context: Context): SharedPreferences {
+        return context.applicationContext.getSharedPreferences("default_pref", Context.MODE_PRIVATE)
     }
 
     @Provides
     @Singleton
-    internal fun provideRepository(articleRepo: ArticleRepo): Repository {
-        return Repository(articleRepo)
+    internal fun provideLocalDataSource(appDatabase: AppDatabase, sharedPreferences: SharedPreferences): LocalDataSource {
+        return LocalDataSource(appDatabase, sharedPreferences)
+    }
+
+    @Provides
+    @Singleton
+    internal fun provideReadingBoxRemoteDataServiceProvider(): ReadingBoxRemoteDataServiceProvider {
+        return ReadingBoxRemoteDataServiceProvider()
+    }
+
+    @Provides
+    @Singleton
+    internal fun provideRemoteDataSource(readingBoxRemoteDataServiceProvider: ReadingBoxRemoteDataServiceProvider): RemoteDataSource {
+        return RemoteDataSource(readingBoxRemoteDataServiceProvider)
+    }
+
+    @Provides
+    @Singleton
+    internal fun provideRepository(localDataSource: LocalDataSource,
+                                   remoteDataSource: RemoteDataSource): Repository {
+        return Repository(localDataSource, remoteDataSource)
     }
 
     @Provides

@@ -19,5 +19,10 @@
 package com.nasrabadiam.readingbox.data
 
 import com.nasrabadiam.readingbox.data.article.ArticleRepo
+import com.nasrabadiam.readingbox.data.article.ArticleRepoImpl
 
-class Repository(val articleRepo: ArticleRepo)
+class Repository(localDataSource: LocalDataSource,
+                 remoteDataSource: RemoteDataSource) {
+
+    val articleRepo: ArticleRepo = ArticleRepoImpl(localDataSource, remoteDataSource)
+}

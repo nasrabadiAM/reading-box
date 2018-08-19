@@ -19,7 +19,6 @@
 package com.nasrabadiam.readingbox.data.db.article
 
 import android.arch.persistence.room.ColumnInfo
-import android.arch.persistence.room.Embedded
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import java.util.*
@@ -28,13 +27,42 @@ import java.util.*
 data class ArticleEntity(@PrimaryKey(autoGenerate = true)
                          @ColumnInfo(name = "_id")
                          var id: Int = 0,
-                         @ColumnInfo(name = "title") var title: String = "",
-                         @ColumnInfo(name = "link") var link: String,
-                         @ColumnInfo(name = "desc") var description: String = "",
-                         @ColumnInfo(name = "author") var author: String = "",
-                         @ColumnInfo(name = "category") var category: String = "",
-                         @ColumnInfo(name = "comments") var comments: String = "",
-                         @Embedded var enclosure: EnclosureEntity = EnclosureEntity(),
-                         @ColumnInfo(name = "guid") var guid: String = "",
-                         @ColumnInfo(name = "pubDate") var pubDate: Date = Date(),
-                         @ColumnInfo(name = "source") var source: String = "")
+
+                         @ColumnInfo(name = "title")
+                         var title: String = "",
+
+                         @ColumnInfo(name = "link")
+                         var link: String,
+
+                         @ColumnInfo(name = "desc")
+                         var description: String = "",
+
+                         @ColumnInfo(name = "author")
+                         var author: String = "",
+
+                         @ColumnInfo(name = "category")
+                         var category: String = "",
+
+                         @ColumnInfo(name = "comments")
+                         var comments: String = "",
+
+                         @ColumnInfo(name = "contents")
+                         var conents: String = "",
+
+                         @ColumnInfo(name = "base_image_url")
+                         var baseImageUrl: String = "",
+
+                         @ColumnInfo(name = "guid")
+                         var guid: String = "",
+
+                         @ColumnInfo(name = "pub_date")
+                         var pubDate: Date = Date(),
+
+                         @ColumnInfo(name = "word_count")
+                         var wordCount: Int = 0,
+
+                         @ColumnInfo(name = "direction")
+                         var layoutDirection: Int = 0,
+
+                         @ColumnInfo(name = "source")
+                         var source: String = "")

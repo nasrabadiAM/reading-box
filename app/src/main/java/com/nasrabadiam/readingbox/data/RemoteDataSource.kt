@@ -16,9 +16,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nasrabadiam.readingbox.data.db.article
+package com.nasrabadiam.readingbox.data
 
-import android.arch.persistence.room.ColumnInfo
+import com.nasrabadiam.readingbox.data.network.ReadingBoxRemoteDataServiceProvider
 
-data class EnclosureEntity(@ColumnInfo(name = "encl_url")  var url: String = "",
-                           @ColumnInfo(name = "encl_type")  var type: String = "")
+class RemoteDataSource(val readingBoxSource: ReadingBoxRemoteDataServiceProvider)

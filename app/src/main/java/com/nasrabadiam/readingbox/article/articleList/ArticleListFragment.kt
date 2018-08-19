@@ -38,9 +38,13 @@ class ArticleListFragment : Fragment(), ArticleListContract.View {
     lateinit var presenter: ArticleListContract.Presenter
 
     private val adapter: ArticleAdapter = ArticleAdapter()
+    private lateinit var activityContract: ArticleListContract.Activity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (activity is ArticleListActivity)
+            activityContract = activity as ArticleListActivity
 
         (activity?.application as ReadingBoxApplication)
                 .appComponent.inject(this)
@@ -74,11 +78,20 @@ class ArticleListFragment : Fragment(), ArticleListContract.View {
         adapter.items = articles
     }
 
+    override fun addNewArticleToItems(article: ArticleViewModel) {
+        val list = adapter.items.toMutableList()
+        list.add(0, article)
+        adapter.items = list
+        activityContract.hideLoading()
+        activityContract.clearUrlEditText()
+    }
+
     override fun articleAddedSuccessfully() {
         Toast.makeText(activity, getString(R.string.article_added_successfully), Toast.LENGTH_SHORT).show()
     }
 
     override fun articleAddFailed() {
+        activityContract.hideLoading()
         Toast.makeText(activity, getString(R.string.article_add_failed), Toast.LENGTH_SHORT).show()
     }
 

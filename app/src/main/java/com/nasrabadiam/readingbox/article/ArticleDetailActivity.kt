@@ -18,7 +18,6 @@
 
 package com.nasrabadiam.readingbox.article
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -68,9 +67,6 @@ class ArticleDetailActivity : AppCompatActivity() {
     }
 
     private fun initialize() {
-
-        @SuppressLint("SetJavaScriptEnabled")
-        articleView.settings.javaScriptEnabled = true
 
         val webViewClient: WebViewClient = object : WebViewClient() {
 

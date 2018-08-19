@@ -19,25 +19,57 @@
 package com.nasrabadiam.readingbox.data.article
 
 import com.nasrabadiam.readingbox.article.domain.Article
-import com.nasrabadiam.readingbox.data.db.AppDatabase
-import com.nasrabadiam.readingbox.data.db.article.ArticleEntity
+import com.nasrabadiam.readingbox.article.domain.CallBack
+import com.nasrabadiam.readingbox.data.LocalDataSource
+import com.nasrabadiam.readingbox.data.RemoteDataSource
+import com.nasrabadiam.readingbox.data.network.MercuryArticle
+import kotlinx.coroutines.experimental.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class ArticleRepoImpl(private val appDatabase: AppDatabase) : ArticleRepo {
+class ArticleRepoImpl(localDataSource: LocalDataSource,
+                      remoteDataSource: RemoteDataSource) : ArticleRepo {
 
+    private val appDatabase = localDataSource.appDatabase
+    private val remoteSource = remoteDataSource.readingBoxSource
 
     override fun getAll(): List<Article> {
         return appDatabase.articleDao()
-                .getAllArticles().map { ArticleConverter.getDomainVersion(it) }
+                .getAllArticles().map { ArticleConverter.getDomainFromDb(it) }
     }
 
     override fun get(id: Int): Article {
-        return ArticleConverter.getDomainVersion(
+        return ArticleConverter.getDomainFromDb(
                 appDatabase.articleDao().getArticle(id))
     }
 
-    override fun addArticle(link: String): Boolean {
-        appDatabase.articleDao().addArticle(ArticleEntity(link = link))
-        return true
+    override fun addArticle(link: String, callback: CallBack<Article>) {
+        val call = remoteSource.article.getArticleDetails(link)
+        call.enqueue(object : Callback<MercuryArticle> {
+            override fun onResponse(call: Call<MercuryArticle>, response: Response<MercuryArticle>) {
+                if (response.isSuccessful) {
+                    if (response.body() == null) {
+                        callback.onFail()
+                        return
+                    }
+
+                    val articleEntity =
+                            ArticleConverter.getDbFromMercury(response.body()!!)
+                    launch {
+                        appDatabase.articleDao().addArticle(articleEntity)
+                    }
+                    val article = ArticleConverter.getDomainFromDb(articleEntity)
+                    callback.onSuccess(article)
+                } else {
+                    callback.onFail()
+                }
+            }
+
+            override fun onFailure(call: Call<MercuryArticle>, t: Throwable) {
+                callback.onFail()
+            }
+        })
     }
 
 }

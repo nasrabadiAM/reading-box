@@ -30,8 +30,8 @@ class ArticleModelImpl(private val repo: Repository) : ArticleModel {
         return repo.articleRepo.get(id)
     }
 
-    override fun addArticle(link: String): Boolean {
-        return repo.articleRepo.addArticle(link)
+    override fun addArticle(link: String, callback: CallBack<Article>) {
+        repo.articleRepo.addArticle(link, callback)
     }
 
 }

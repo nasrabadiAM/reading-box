@@ -25,6 +25,7 @@ interface ArticleListContract {
 
     interface View : BaseContract.View {
         fun showArticles(articles: List<ArticleViewModel>)
+        fun addNewArticleToItems(article: ArticleViewModel)
         fun articleAddedSuccessfully()
         fun articleAddFailed()
     }
@@ -32,5 +33,11 @@ interface ArticleListContract {
     interface Presenter : BaseContract.Presenter<ArticleListContract.View> {
         fun getAllArticles()
         fun addArticle(link: String)
+    }
+
+    interface Activity {
+        fun clearUrlEditText()
+        fun hideLoading()
+        fun showLoading()
     }
 }

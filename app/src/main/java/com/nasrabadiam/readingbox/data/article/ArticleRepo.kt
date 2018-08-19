@@ -19,10 +19,11 @@
 package com.nasrabadiam.readingbox.data.article
 
 import com.nasrabadiam.readingbox.article.domain.Article
+import com.nasrabadiam.readingbox.article.domain.CallBack
 
 interface ArticleRepo {
 
     fun getAll(): List<Article>
     fun get(id: Int): Article
-    fun addArticle(link: String): Boolean
+    fun addArticle(link: String, callback: CallBack<Article>)
 }

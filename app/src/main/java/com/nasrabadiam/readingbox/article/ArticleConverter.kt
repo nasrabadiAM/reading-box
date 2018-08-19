@@ -29,7 +29,8 @@ class ArticleConverter {
 
         fun getViewVersion(a: Article): ArticleViewModel {
             return ArticleViewModel(id = a.id, title = a.title, link = a.link,
-                    description = a.description, guid = a.guid)
+                    description = a.description, guid = a.guid,
+                    enclosure = EnclosureViewModel(url = a.baseImageUrl))
         }
     }
 }

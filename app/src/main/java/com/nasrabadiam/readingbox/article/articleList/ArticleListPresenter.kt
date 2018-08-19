@@ -19,8 +19,9 @@
 package com.nasrabadiam.readingbox.article.articleList
 
 import com.nasrabadiam.readingbox.article.ArticleConverter
+import com.nasrabadiam.readingbox.article.domain.Article
 import com.nasrabadiam.readingbox.article.domain.ArticleModel
-import kotlinx.coroutines.experimental.android.UI
+import com.nasrabadiam.readingbox.article.domain.CallBack
 import kotlinx.coroutines.experimental.launch
 
 class ArticleListPresenter(val article: ArticleModel) : ArticleListContract.Presenter {
@@ -42,11 +43,16 @@ class ArticleListPresenter(val article: ArticleModel) : ArticleListContract.Pres
 
     override fun addArticle(link: String) {
         launch {
-            val result = article.addArticle(link)
-            launch(UI) {
-                if (result) view.articleAddedSuccessfully()
-                else view.articleAddFailed()
-            }
+            article.addArticle(link, object : CallBack<Article> {
+                override fun onSuccess(response: Article) {
+                    view.addNewArticleToItems(ArticleConverter.getViewVersion(response))
+                    view.articleAddedSuccessfully()
+                }
+
+                override fun onFail() {
+                    view.articleAddFailed()
+                }
+            })
         }
     }
 
