@@ -38,6 +38,7 @@ versions.mockito = "2.7.19"
 versions.mockito_all = "1.10.19"
 versions.dexmaker = "2.2.0"
 versions.constraint_layout = "1.0.2"
+versions.leakcanary = "1.6.1"
 versions.glide = "4.7.1"
 versions.picasso = "2.5.2"
 versions.timber = "4.5.1"
@@ -131,6 +132,12 @@ def coroutines = [:]
 coroutines.core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines"
 coroutines.android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutines"
 deps.coroutines = coroutines
+
+def leakcanary = [:]
+leakcanary.debug = "com.squareup.leakcanary:leakcanary-android:1.6.1$versions.leakcanary"
+leakcanary.release = "com.squareup.leakcanary:leakcanary-android-no-op:$versions.leakcanary"
+leakcanary.debugfragment = "com.squareup.leakcanary:leakcanary-support-fragment:$versions.leakcanary"
+deps.leakcanary = leakcanary
 
 def glide = [:]
 glide.runtime = "com.github.bumptech.glide:glide:$versions.glide"
