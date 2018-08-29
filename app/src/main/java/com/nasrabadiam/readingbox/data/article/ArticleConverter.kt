@@ -21,17 +21,18 @@ package com.nasrabadiam.readingbox.data.article
 import com.nasrabadiam.readingbox.article.domain.Article
 import com.nasrabadiam.readingbox.data.db.article.ArticleEntity
 import com.nasrabadiam.readingbox.data.network.MercuryArticle
+import java.util.*
 
 class ArticleConverter {
 
     companion object {
 
         fun getDomainFromDb(a: ArticleEntity): Article {
-            return Article(id = a.id, title = a.title, link = a.link,
-                    description = a.description, author = a.author,
-                    category = a.category, comments = a.comments,
-                    baseImageUrl = a.baseImageUrl, guid = a.guid,
-                    pubDate = a.pubDate, source = a.source)
+            return Article(id = a.id, title = a.title ?: "", link = a.link,
+                    description = a.description ?: "", author = a.author ?: "",
+                    category = a.category ?: "", comments = a.comments ?: "",
+                    baseImageUrl = a.baseImageUrl ?: "", guid = a.guid,
+                    pubDate = a.pubDate ?: Date(), source = a.source ?: "")
         }
 
         fun getDbFromDomain(a: Article): ArticleEntity {

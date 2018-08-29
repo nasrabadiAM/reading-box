@@ -19,7 +19,9 @@
 package com.nasrabadiam.readingbox.di
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
+import com.nasrabadiam.readingbox.ConnectionFailedActivity
 import com.nasrabadiam.readingbox.ReadingBoxApplication
 import com.nasrabadiam.readingbox.article.articleList.ArticleListContract
 import com.nasrabadiam.readingbox.article.articleList.ArticleListPresenter
@@ -62,8 +64,8 @@ class AppModule(private val application: ReadingBoxApplication) {
 
     @Provides
     @Singleton
-    internal fun provideReadingBoxRemoteDataServiceProvider(): ReadingBoxRemoteDataServiceProvider {
-        return ReadingBoxRemoteDataServiceProvider()
+    internal fun provideReadingBoxRemoteDataServiceProvider(context: Context): ReadingBoxRemoteDataServiceProvider {
+        return ReadingBoxRemoteDataServiceProvider(context)
     }
 
     @Provides

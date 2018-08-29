@@ -33,6 +33,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ImageButton
 import android.widget.ProgressBar
+import android.widget.Toast
 import com.nasrabadiam.readingbox.R
 
 
@@ -50,7 +51,13 @@ class ArticleDetailActivity : AppCompatActivity() {
         progressbar = findViewById(R.id.progressbar)
         retryButton = findViewById(R.id.failed_retry)
 
-        url = intent.extras.getString(URL_INPUT_KEY)
+        if (intent.extras?.getString(URL_INPUT_KEY) == null) {
+            Toast.makeText(this, R.string.invalid_article_url, Toast.LENGTH_LONG).show()
+            finish()
+            return
+        } else {
+            url = intent.extras?.getString(URL_INPUT_KEY)!!
+        }
 
         if (savedInstanceState == null) {
             initialize()

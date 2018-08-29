@@ -58,6 +58,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
         sourceCompatibility JavaVersion.VERSION_1_8
     }
+    sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/debug/assets/'] } }
 }
 
 
@@ -100,6 +101,6 @@ dependencies {
     androidTestImplementation deps.robolectric.core
 
     //memory-leak
-//    debugImplementation deps.leakcanary.debug
-//    debugImplementation deps.leakcanary.debugfragment
+    debugImplementation deps.leakcanary.debug
+    debugImplementation deps.leakcanary.debugfragment
 }

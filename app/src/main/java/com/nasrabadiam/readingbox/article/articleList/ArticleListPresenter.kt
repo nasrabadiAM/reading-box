@@ -22,10 +22,10 @@ import com.nasrabadiam.readingbox.article.ArticleConverter
 import com.nasrabadiam.readingbox.article.domain.Article
 import com.nasrabadiam.readingbox.article.domain.ArticleModel
 import com.nasrabadiam.readingbox.article.domain.CallBack
+import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 
 class ArticleListPresenter(val article: ArticleModel) : ArticleListContract.Presenter {
-
     private lateinit var view: ArticleListContract.View
 
     override fun setView(view: ArticleListContract.View) {
@@ -51,6 +51,23 @@ class ArticleListPresenter(val article: ArticleModel) : ArticleListContract.Pres
 
                 override fun onFail() {
                     view.articleAddFailed()
+                }
+            })
+        }
+    }
+
+    override fun removeArticle(id: Int) {
+        launch {
+            article.remove(id, object : CallBack<Int> {
+                override fun onSuccess(response: Int) {
+                    launch(UI) {
+                        view.removeArticleFromItems(response)
+                        view.articleRemoveSuccessfully()
+                    }
+                }
+
+                override fun onFail() {
+                    launch(UI) { view.articleRemoveFailed() }
                 }
             })
         }

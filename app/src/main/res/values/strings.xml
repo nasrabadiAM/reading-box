@@ -29,4 +29,10 @@
     <string name="add_article">Add Article</string>
     <string name="link">Link</string>
     <string name="url_is_not_valid">Url Is Not Valid!</string>
+    <string name="archive">Archive</string>
+    <string name="delete">Delete</string>
+    <string name="remove_article_successfully">Article Removed Successfully!</string>
+    <string name="remove_article_failed">Removing Article Failed. \\nTry Again!</string>
+    <string name="invalid_article_url">Article Url Is Not Valid!</string>
+    <string name="connection_failed">Connection Failed!</string>
 </resources>

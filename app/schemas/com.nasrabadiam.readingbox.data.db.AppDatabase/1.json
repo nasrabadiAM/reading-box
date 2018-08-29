@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "d35f4fdb43eb0064173b23f0c03c62e8",
+    "identityHash": "8f60f74d17c09463641c80f3f11a1055",
     "entities": [
       {
         "tableName": "article",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `link` TEXT NOT NULL, `desc` TEXT NOT NULL, `author` TEXT NOT NULL, `category` TEXT NOT NULL, `comments` TEXT NOT NULL, `contents` TEXT NOT NULL, `base_image_url` TEXT NOT NULL, `guid` TEXT NOT NULL, `pub_date` INTEGER NOT NULL, `word_count` INTEGER NOT NULL, `direction` INTEGER NOT NULL, `source` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT, `link` TEXT NOT NULL, `desc` TEXT, `author` TEXT, `category` TEXT, `comments` TEXT, `contents` TEXT, `base_image_url` TEXT, `guid` TEXT NOT NULL, `pub_date` INTEGER, `word_count` INTEGER, `direction` INTEGER, `source` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -18,7 +18,7 @@
             "fieldPath": "title",
             "columnName": "title",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "link",
@@ -30,37 +30,37 @@
             "fieldPath": "description",
             "columnName": "desc",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "author",
             "columnName": "author",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "category",
             "columnName": "category",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "comments",
             "columnName": "comments",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "conents",
             "columnName": "contents",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "baseImageUrl",
             "columnName": "base_image_url",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "guid",
@@ -72,25 +72,25 @@
             "fieldPath": "pubDate",
             "columnName": "pub_date",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "wordCount",
             "columnName": "word_count",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "layoutDirection",
             "columnName": "direction",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "source",
             "columnName": "source",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -105,7 +105,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"d35f4fdb43eb0064173b23f0c03c62e8\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"8f60f74d17c09463641c80f3f11a1055\")"
     ]
   }
 }

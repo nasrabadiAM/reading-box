@@ -18,11 +18,13 @@
 
 package com.nasrabadiam.readingbox.article.articleList
 
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.TextView
 import com.nasrabadiam.readingbox.R
 import com.nasrabadiam.readingbox.article.ArticleViewModel
@@ -31,17 +33,22 @@ import java.util.*
 
 class ArticleAdapter : RecyclerView.Adapter<ArticleItemViewHolder>() {
 
-    var items: List<ArticleViewModel> = Collections.emptyList()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+    private var items: List<ArticleViewModel> = Collections.emptyList()
+
+    lateinit var popupMenu: PopupMenu
 
     var clickListener: OnItemClickListener? = null
+    var menuItemClickListener: OnItemMenuClicked? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleItemViewHolder {
-        return ArticleItemViewHolder(LayoutInflater.from(parent.context)
-                .inflate(R.layout.article_list_item, parent, false))
+        val view = LayoutInflater.from(parent.context)
+                .inflate(viewType, parent, false)
+        return ArticleItemViewHolder(view)
+    }
+
+    /*you can choose which item layout should be load based on position here*/
+    override fun getItemViewType(position: Int): Int {
+        return R.layout.article_list_item
     }
 
     override fun onBindViewHolder(holder: ArticleItemViewHolder, position: Int) {
@@ -49,12 +56,42 @@ class ArticleAdapter : RecyclerView.Adapter<ArticleItemViewHolder>() {
         holder.summary.text = items[position].description
         holder.image.loadUrl(items[position].enclosure.url)
         holder.parent.setOnClickListener {
-            clickListener?.onClick(holder.parent, items[position])
+            clickListener?.onClick(it, items[position])
+        }
+
+        popupMenu = PopupMenu(holder.parent.context, holder.parent)
+        popupMenu.inflate(R.menu.articles_option)
+        popupMenu.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.archive -> {
+                    menuItemClickListener?.onArchive(holder.parent, items[position], position)
+                    true
+                }
+                R.id.delete -> {
+                    menuItemClickListener?.onDelete(holder.parent, items[position], position)
+                    true
+                }
+                else -> false
+            }
+        }
+
+        holder.parent.setOnLongClickListener {
+            popupMenu.show()
+            true
         }
     }
 
     override fun getItemCount(): Int {
         return items.size
+    }
+
+    fun updateList(newList: List<ArticleViewModel>) {
+        val diffResult = DiffUtil.calculateDiff(ArticleDiffUtil(this.items, newList))
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    fun getItems(): List<ArticleViewModel> {
+        return items
     }
 
 }
@@ -67,6 +104,41 @@ class ArticleItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 }
 
 
-public interface OnItemClickListener{
-    public fun onClick(view: View, article: ArticleViewModel)
+interface OnItemClickListener {
+    fun onClick(view: View, article: ArticleViewModel)
+}
+
+interface OnItemLongClickListener {
+    fun onLongClick(view: View, article: ArticleViewModel)
+}
+
+interface OnItemMenuClicked {
+    fun onDelete(view: View, article: ArticleViewModel, position: Int)
+    fun onArchive(view: View, article: ArticleViewModel, position: Int)
+}
+
+
+class ArticleDiffUtil(val newItems: List<ArticleViewModel>,
+                      val oldItems: List<ArticleViewModel>) : DiffUtil.Callback() {
+
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPostion: Int): Boolean {
+        return oldItems[oldItemPosition].id == newItems[newItemPostion].id
+    }
+
+    override fun getOldListSize(): Int {
+        return oldItems.size
+    }
+
+    override fun getNewListSize(): Int {
+        return newItems.size
+    }
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPostion: Int): Boolean {
+        return (oldItems[oldItemPosition].title == newItems[newItemPostion].title)
+                || (oldItems[oldItemPosition].description == newItems[newItemPostion].description)
+                || (oldItems[oldItemPosition].author == newItems[newItemPostion].author)
+                || (oldItems[oldItemPosition].enclosure.url == newItems[newItemPostion].enclosure.url)
+    }
+
 }

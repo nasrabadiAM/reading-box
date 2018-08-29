@@ -30,8 +30,8 @@ import retrofit2.Response
 
 class ArticleRepoImpl(localDataSource: LocalDataSource,
                       remoteDataSource: RemoteDataSource) : ArticleRepo {
-
     private val appDatabase = localDataSource.appDatabase
+
     private val remoteSource = remoteDataSource.readingBoxSource
 
     override fun getAll(): List<Article> {
@@ -48,21 +48,18 @@ class ArticleRepoImpl(localDataSource: LocalDataSource,
         val call = remoteSource.article.getArticleDetails(link)
         call.enqueue(object : Callback<MercuryArticle> {
             override fun onResponse(call: Call<MercuryArticle>, response: Response<MercuryArticle>) {
-                if (response.isSuccessful) {
-                    if (response.body() == null) {
-                        callback.onFail()
-                        return
-                    }
+                when {
 
-                    val articleEntity =
-                            ArticleConverter.getDbFromMercury(response.body()!!)
-                    launch {
-                        appDatabase.articleDao().addArticle(articleEntity)
+                    response.isSuccessful && response.body() != null -> {
+                        val articleEntity =
+                                ArticleConverter.getDbFromMercury(response.body()!!)
+                        launch {
+                            appDatabase.articleDao().addArticle(articleEntity)
+                        }
+                        val article = ArticleConverter.getDomainFromDb(articleEntity)
+                        callback.onSuccess(article)
                     }
-                    val article = ArticleConverter.getDomainFromDb(articleEntity)
-                    callback.onSuccess(article)
-                } else {
-                    callback.onFail()
+                    else -> callback.onFail()
                 }
             }
 
@@ -72,4 +69,9 @@ class ArticleRepoImpl(localDataSource: LocalDataSource,
         })
     }
 
+    override fun remove(id: Int, callback: CallBack<Int>) {
+        val result = appDatabase.articleDao().removeArticle(id)
+        if (result > 0) callback.onSuccess(id)
+        else callback.onFail()
+    }
 }

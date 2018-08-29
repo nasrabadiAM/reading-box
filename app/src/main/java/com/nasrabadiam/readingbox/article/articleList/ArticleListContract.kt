@@ -28,11 +28,15 @@ interface ArticleListContract {
         fun addNewArticleToItems(article: ArticleViewModel)
         fun articleAddedSuccessfully()
         fun articleAddFailed()
+        fun removeArticleFromItems(id: Int)
+        fun articleRemoveSuccessfully()
+        fun articleRemoveFailed()
     }
 
     interface Presenter : BaseContract.Presenter<ArticleListContract.View> {
         fun getAllArticles()
         fun addArticle(link: String)
+        fun removeArticle(id: Int)
     }
 
     interface Activity {

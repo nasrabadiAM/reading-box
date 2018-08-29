@@ -32,6 +32,9 @@ interface ArticleDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     fun addArticle(vararg articles: ArticleEntity)
 
-    @Query("SELECT * FROM article WHERE :id=_id")
+    @Query("SELECT * FROM article WHERE _id=:id")
     fun getArticle(id: Int): ArticleEntity
+
+    @Query("DELETE FROM article WHERE _id=:id")
+    fun removeArticle(vararg id: Int):Int
 }

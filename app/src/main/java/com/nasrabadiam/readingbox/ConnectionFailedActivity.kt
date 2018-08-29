@@ -18,31 +18,14 @@
 
 package com.nasrabadiam.readingbox
 
-import android.app.Application
-import com.nasrabadiam.readingbox.di.AppComponent
-import com.nasrabadiam.readingbox.di.AppModule
-import com.nasrabadiam.readingbox.di.DaggerAppComponent
-import com.squareup.leakcanary.LeakCanary
+import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 
-class ReadingBoxApplication : Application() {
+class ConnectionFailedActivity : AppCompatActivity() {
 
-    lateinit var appComponent: AppComponent
 
-    override fun onCreate() {
-        super.onCreate()
-        if (BuildConfig.DEBUG) {
-            if (LeakCanary.isInAnalyzerProcess(this)) {
-                return
-            }
-            LeakCanary.install(this)
-        }
-        initializeInjector()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.connection_failed)
     }
-
-    private fun initializeInjector() {
-        appComponent = DaggerAppComponent.builder()
-                .appModule(AppModule(this))
-                .build()
-    }
-
 }

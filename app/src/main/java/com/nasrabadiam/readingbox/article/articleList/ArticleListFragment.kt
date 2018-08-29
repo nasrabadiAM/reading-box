@@ -33,13 +33,12 @@ import com.nasrabadiam.readingbox.article.ArticleViewModel
 import javax.inject.Inject
 
 class ArticleListFragment : Fragment(), ArticleListContract.View {
-
     @Inject
     lateinit var presenter: ArticleListContract.Presenter
 
     private val adapter: ArticleAdapter = ArticleAdapter()
-    private lateinit var activityContract: ArticleListContract.Activity
 
+    private lateinit var activityContract: ArticleListContract.Activity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -52,36 +51,57 @@ class ArticleListFragment : Fragment(), ArticleListContract.View {
         presenter.setView(this)
         presenter.getAllArticles()
         adapter.clickListener = object : OnItemClickListener {
-            override fun onClick(view: View, article: ArticleViewModel) {
-                val intent =
-                        ArticleDetailActivity.getCallingIntent(activity!!, article.link)
-                startActivity(intent)
+            override fun onClick(view: View, article: ArticleViewModel) = showArticleDetail(article)
+        }
+        adapter.menuItemClickListener = object : OnItemMenuClicked {
+            override fun onArchive(view: View, article: ArticleViewModel, position: Int) {
+                archiveArticle(article.id)
+            }
+
+            override fun onDelete(view: View, article: ArticleViewModel, position: Int) {
+                removeArticle(article.id)
             }
         }
     }
+
+    fun showArticleDetail(article: ArticleViewModel) {
+        val intent =
+                ArticleDetailActivity.getCallingIntent(activity!!, article.link)
+        startActivity(intent)
+    }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.recycler_layout, container)
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(activity)
+        recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
 
         return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
+    private fun archiveArticle(id: Int) {
+        TODO("Not Implemented yet")
     }
 
     fun addArticle(link: String) {
         presenter.addArticle(link)
     }
 
-
-    override fun showArticles(articles: List<ArticleViewModel>) {
-        adapter.items = articles
+    fun removeArticle(id: Int) {
+        presenter.removeArticle(id)
     }
 
+    override fun showArticles(articles: List<ArticleViewModel>) {
+        adapter.updateList(articles)
+    }
+
+
     override fun addNewArticleToItems(article: ArticleViewModel) {
-        val list = adapter.items.toMutableList()
+        val list = adapter.getItems().toMutableList()
         list.add(0, article)
-        adapter.items = list
+        adapter.updateList(list)
         activityContract.hideLoading()
         activityContract.clearUrlEditText()
     }
@@ -96,9 +116,28 @@ class ArticleListFragment : Fragment(), ArticleListContract.View {
     }
 
     companion object {
+
         fun getForAll(): ArticleListFragment {
             return ArticleListFragment()
         }
     }
 
+    override fun removeArticleFromItems(id: Int) {
+        val list = adapter.getItems().toMutableList()
+        for (i in 0 until adapter.getItems().size) {
+            if (adapter.getItems()[i].id == id) {
+                list.removeAt(i)
+                return
+            }
+        }
+        adapter.updateList(list)
+    }
+
+    override fun articleRemoveSuccessfully() {
+        Toast.makeText(activity, getString(R.string.remove_article_successfully), Toast.LENGTH_SHORT).show()
+    }
+
+    override fun articleRemoveFailed() {
+        Toast.makeText(activity, getString(R.string.remove_article_failed), Toast.LENGTH_SHORT).show()
+    }
 }

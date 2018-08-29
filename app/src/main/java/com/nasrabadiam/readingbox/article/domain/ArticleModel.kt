@@ -25,4 +25,6 @@ interface ArticleModel {
     fun get(id: Int): Article
 
     fun addArticle(link: String,callback: CallBack<Article>)
+
+    fun remove(id: Int,callback: CallBack<Int>)
 }

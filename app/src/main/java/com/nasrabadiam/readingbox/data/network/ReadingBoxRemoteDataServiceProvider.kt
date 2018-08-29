@@ -18,45 +18,41 @@
 
 package com.nasrabadiam.readingbox.data.network
 
+import android.content.Context
 import com.google.gson.GsonBuilder
+import com.nasrabadiam.readingbox.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class ReadingBoxRemoteDataServiceProvider {
+class ReadingBoxRemoteDataServiceProvider(val context: Context) {
 
-    private val BASE_URL = "http://mercury"
     private val MERCURY_BASE_URL = "https://mercury.postlight.com"
 
-    private var mRetrofitDefaultClient: Retrofit
     private var mRetrofitMercuryClient: Retrofit
 
     var article: ArticleService
 
-
     init {
         val logging = HttpLoggingInterceptor()
-        logging.level = HttpLoggingInterceptor.Level.HEADERS
+        logging.level = HttpLoggingInterceptor.Level.BODY
 
 
-        val httpClient = OkHttpClient.Builder()
         val mercuryHttpClient = OkHttpClient.Builder()
 
-        httpClient.addInterceptor(logging)
-
         mercuryHttpClient.addInterceptor(logging)
-        mercuryHttpClient.addInterceptor(MercuryInterceptor())
+
+        //set best interceptor
+        if (BuildConfig.DEBUG) {
+            mercuryHttpClient.addInterceptor(FakeMercuryInterceptor(context))
+        } else {
+            mercuryHttpClient.addInterceptor(MercuryInterceptor())
+        }
 
         val gsonConverterFactory =
                 GsonConverterFactory.create(GsonBuilder()
                         .create())
-
-        mRetrofitDefaultClient = Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(httpClient.build())
-                .addConverterFactory(gsonConverterFactory)
-                .build()
 
         mRetrofitMercuryClient = Retrofit.Builder()
                 .baseUrl(MERCURY_BASE_URL)

@@ -21,7 +21,6 @@ package com.nasrabadiam.readingbox.article.domain
 import com.nasrabadiam.readingbox.data.Repository
 
 class ArticleModelImpl(private val repo: Repository) : ArticleModel {
-
     override fun getAll(): List<Article> {
         return repo.articleRepo.getAll()
     }
@@ -32,6 +31,10 @@ class ArticleModelImpl(private val repo: Repository) : ArticleModel {
 
     override fun addArticle(link: String, callback: CallBack<Article>) {
         repo.articleRepo.addArticle(link, callback)
+    }
+
+    override fun remove(id: Int, callback: CallBack<Int>) {
+        repo.articleRepo.remove(id,callback)
     }
 
 }

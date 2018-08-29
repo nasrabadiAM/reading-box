@@ -18,6 +18,9 @@
 
 package com.nasrabadiam.readingbox
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.util.Patterns
 import android.widget.ImageView
 import com.squareup.picasso.Picasso

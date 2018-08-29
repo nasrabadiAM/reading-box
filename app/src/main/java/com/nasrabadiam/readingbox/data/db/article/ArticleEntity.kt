@@ -29,40 +29,40 @@ data class ArticleEntity(@PrimaryKey(autoGenerate = true)
                          var id: Int = 0,
 
                          @ColumnInfo(name = "title")
-                         var title: String = "",
+                         var title: String? = "",
 
                          @ColumnInfo(name = "link")
                          var link: String,
 
                          @ColumnInfo(name = "desc")
-                         var description: String = "",
+                         var description: String? = "",
 
                          @ColumnInfo(name = "author")
-                         var author: String = "",
+                         var author: String? = "",
 
                          @ColumnInfo(name = "category")
-                         var category: String = "",
+                         var category: String? = "",
 
                          @ColumnInfo(name = "comments")
-                         var comments: String = "",
+                         var comments: String? = "",
 
                          @ColumnInfo(name = "contents")
-                         var conents: String = "",
+                         var conents: String? = "",
 
                          @ColumnInfo(name = "base_image_url")
-                         var baseImageUrl: String = "",
+                         var baseImageUrl: String? = "",
 
                          @ColumnInfo(name = "guid")
                          var guid: String = "",
 
                          @ColumnInfo(name = "pub_date")
-                         var pubDate: Date = Date(),
+                         var pubDate: Date? = Date(),
 
                          @ColumnInfo(name = "word_count")
-                         var wordCount: Int = 0,
+                         var wordCount: Int? = 0,
 
                          @ColumnInfo(name = "direction")
-                         var layoutDirection: Int = 0,
+                         var layoutDirection: Int? = 0,
 
                          @ColumnInfo(name = "source")
-                         var source: String = "")
+                         var source: String? = "")
