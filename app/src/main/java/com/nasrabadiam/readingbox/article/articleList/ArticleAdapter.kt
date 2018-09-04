@@ -18,6 +18,7 @@
 
 package com.nasrabadiam.readingbox.article.articleList
 
+import android.os.Bundle
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -30,6 +31,8 @@ import com.nasrabadiam.readingbox.R
 import com.nasrabadiam.readingbox.article.ArticleViewModel
 import com.nasrabadiam.readingbox.loadUrl
 import java.util.*
+import kotlin.collections.ArrayList
+
 
 class ArticleAdapter : RecyclerView.Adapter<ArticleItemViewHolder>() {
 
@@ -85,9 +88,11 @@ class ArticleAdapter : RecyclerView.Adapter<ArticleItemViewHolder>() {
         return items.size
     }
 
-    fun updateList(newList: List<ArticleViewModel>) {
-        val diffResult = DiffUtil.calculateDiff(ArticleDiffUtil(this.items, newList))
+    fun updateList(newData: List<ArticleViewModel>) {
+        val diffResult = DiffUtil.calculateDiff(ArticleDiffUtil(newData, this.items))
         diffResult.dispatchUpdatesTo(this)
+        this.items = ArrayList()
+        (this.items as ArrayList<ArticleViewModel>).addAll(newData)
     }
 
     fun getItems(): List<ArticleViewModel> {
@@ -118,8 +123,8 @@ interface OnItemMenuClicked {
 }
 
 
-class ArticleDiffUtil(val newItems: List<ArticleViewModel>,
-                      val oldItems: List<ArticleViewModel>) : DiffUtil.Callback() {
+class ArticleDiffUtil(private val newItems: List<ArticleViewModel>,
+                      private val oldItems: List<ArticleViewModel>) : DiffUtil.Callback() {
 
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPostion: Int): Boolean {
@@ -135,10 +140,36 @@ class ArticleDiffUtil(val newItems: List<ArticleViewModel>,
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPostion: Int): Boolean {
-        return (oldItems[oldItemPosition].title == newItems[newItemPostion].title)
-                || (oldItems[oldItemPosition].description == newItems[newItemPostion].description)
-                || (oldItems[oldItemPosition].author == newItems[newItemPostion].author)
-                || (oldItems[oldItemPosition].enclosure.url == newItems[newItemPostion].enclosure.url)
+        return oldItems[oldItemPosition].compareTo(newItems[newItemPostion]) == 0
     }
 
+
+    override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any? {
+
+        val newItem = newItems[newItemPosition]
+        val oldItem = oldItems[oldItemPosition]
+
+        val diff = Bundle()
+        if (newItem.title != oldItem.title) {
+            diff.putString("title", newItem.title)
+        }
+        if (newItem.description != oldItem.description) {
+            diff.putString("description", newItem.description)
+        }
+        if (newItem.link != oldItem.link) {
+            diff.putString("link", newItem.link)
+        }
+        if (newItem.guid != oldItem.guid) {
+            diff.putString("guid", newItem.guid)
+        }
+        if (newItem.enclosure.url != oldItem.enclosure.url) {
+            diff.putString("enclosure.url", newItem.enclosure.url)
+        }
+        if (newItem.id != oldItem.id) {
+            diff.putInt("id", newItem.id)
+        }
+        return if (diff.size() == 0) {
+            null
+        } else diff
+    }
 }

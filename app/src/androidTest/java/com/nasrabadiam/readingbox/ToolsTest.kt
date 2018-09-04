@@ -16,34 +16,29 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nasrabadiam.readingbox.data.network
+package com.nasrabadiam.readingbox
 
-import okhttp3.Interceptor
-import okhttp3.Response
+import android.support.test.runner.AndroidJUnit4
+import org.junit.Assert
+import org.junit.Test
+import org.junit.runner.RunWith
 
 
-class MercuryInterceptor : Interceptor {
+@RunWith(AndroidJUnit4::class)
+class ToolsTest {
 
+    private val validUrl = "http://google.com"
+    private val inValidUrl = "bla bla"
 
-    val API_KEY = "jtePsEzEBi6u6zsPC4S2RSXUiaEtqcEGlbEW4P6D"
-
-    override fun intercept(chain: Interceptor.Chain?): Response {
-        return handleIntercept(chain!!, API_KEY)
+    @Test
+    fun testCorrectUrlIsValid() {
+        val result = validUrl.isUrlValid()
+        Assert.assertTrue(result)
     }
 
-    companion object {
-
-        fun handleIntercept(chain: Interceptor.Chain, apiKey: String): Response {
-            val original = chain.request()
-
-            val request = original.newBuilder()
-                    .header("content-type", "application/json")
-                    .header("x-api-key", apiKey)
-                    .method(original.method(), original.body())
-                    .build()
-
-            return chain.proceed(request)
-        }
+    @Test
+    fun testInCorrectUrlIsInValid() {
+        val result = inValidUrl.isUrlValid()
+        Assert.assertFalse(result)
     }
-
 }

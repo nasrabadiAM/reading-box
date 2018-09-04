@@ -22,7 +22,7 @@ import android.content.Context
 import okhttp3.*
 
 
-class FakeMercuryInterceptor(val context: Context) : Interceptor {
+class FakeBackendInterceptor(val context: Context) : Interceptor {
 
     private val fileSuffix = ".json"
     private val contentType = "application/json"
@@ -31,12 +31,6 @@ class FakeMercuryInterceptor(val context: Context) : Interceptor {
 
         val fileName = getFileName(chain!!)
         val fileContentString = getFileContent(fileName)
-
-        //Handle NetworkConnectionInterceptor
-        val response = chain.proceed(chain.request())
-        if (response.code() == 420) {
-            return chain.proceed(chain.request())
-        }
 
         return Response.Builder()
                 .code(200)

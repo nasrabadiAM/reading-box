@@ -18,6 +18,18 @@
 
 package com.nasrabadiam.readingbox.article
 
+
 data class ArticleViewModel(val id: Int, val title: String, val link: String,
                             val description: String = "", val author: String = "",
-                            val enclosure: EnclosureViewModel = EnclosureViewModel(), val guid: String)
+                            val enclosure: EnclosureViewModel = EnclosureViewModel(),
+                            val guid: String) : Comparable<ArticleViewModel> {
+    override fun compareTo(other: ArticleViewModel): Int {
+        return if (other.title == this.title &&
+                other.description == this.description &&
+                other.guid == this.guid &&
+                other.link == this.link &&
+                other.enclosure.url == this.enclosure.url) {
+            0
+        } else 1
+    }
+}

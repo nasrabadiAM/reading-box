@@ -28,6 +28,7 @@ versions.lifecycle = "1.1.1"
 versions.support = "28.0.0-rc01"
 versions.dagger = "2.15"
 versions.junit = "4.12"
+versions.uiautomator = "2.1.3"
 versions.espresso = "3.0.1"
 versions.robolectric = "3.8"
 versions.retrofit = "2.3.0"
@@ -154,6 +155,7 @@ deps.mock_web_server = "com.squareup.okhttp3:mockwebserver:$versions.mockwebserv
 deps.rxjava2 = "io.reactivex.rxjava2:rxjava:$versions.rxjava2"
 deps.rx_android = "io.reactivex.rxjava2:rxandroid:$versions.rx_android"
 deps.hamcrest = "org.hamcrest:hamcrest-all:$versions.hamcrest"
+deps.uiautomator = "com.android.support.test.uiautomator:uiautomator-v18:$versions.uiautomator"
 deps.android_gradle_plugin = "com.android.tools.build:gradle:$versions.android_gradle_plugin"
 ext.deps = deps
 

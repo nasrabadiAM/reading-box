@@ -28,7 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class ReadingBoxRemoteDataServiceProvider(val context: Context) {
 
-    private val MERCURY_BASE_URL = "https://mercury.postlight.com"
+    private val BASE_URL = "https://reading-box-amndevelopers.fandogh.cloud/api/v1/"
 
     private var mRetrofitMercuryClient: Retrofit
 
@@ -39,15 +39,13 @@ class ReadingBoxRemoteDataServiceProvider(val context: Context) {
         logging.level = HttpLoggingInterceptor.Level.BODY
 
 
-        val mercuryHttpClient = OkHttpClient.Builder()
+        val httpClient = OkHttpClient.Builder()
 
-        mercuryHttpClient.addInterceptor(logging)
+        httpClient.addInterceptor(logging)
 
         //set best interceptor
         if (BuildConfig.DEBUG) {
-            mercuryHttpClient.addInterceptor(FakeMercuryInterceptor(context))
-        } else {
-            mercuryHttpClient.addInterceptor(MercuryInterceptor())
+            httpClient.addInterceptor(FakeBackendInterceptor(context))
         }
 
         val gsonConverterFactory =
@@ -55,8 +53,8 @@ class ReadingBoxRemoteDataServiceProvider(val context: Context) {
                         .create())
 
         mRetrofitMercuryClient = Retrofit.Builder()
-                .baseUrl(MERCURY_BASE_URL)
-                .client(mercuryHttpClient.build())
+                .baseUrl(BASE_URL)
+                .client(httpClient.build())
                 .addConverterFactory(gsonConverterFactory)
                 .build()
 

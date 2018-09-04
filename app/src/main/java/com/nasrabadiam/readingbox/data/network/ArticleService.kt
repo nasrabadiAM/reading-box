@@ -24,6 +24,6 @@ import retrofit2.http.Query
 
 interface ArticleService {
 
-    @GET("parser")
-    fun getArticleDetails(@Query("url") url: String): Call<MercuryArticle>
+    @GET("article")
+    fun getArticleDetails(@Query("url") url: String): Call<List<ServiceArticle>>
 }

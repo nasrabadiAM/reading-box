@@ -20,7 +20,8 @@ package com.nasrabadiam.readingbox.data.article
 
 import com.nasrabadiam.readingbox.article.domain.Article
 import com.nasrabadiam.readingbox.data.db.article.ArticleEntity
-import com.nasrabadiam.readingbox.data.network.MercuryArticle
+import com.nasrabadiam.readingbox.data.network.ServiceArticle
+import java.text.SimpleDateFormat
 import java.util.*
 
 class ArticleConverter {
@@ -43,16 +44,16 @@ class ArticleConverter {
                     pubDate = a.pubDate, source = a.source)
         }
 
-        fun getDbFromMercury(a: MercuryArticle): ArticleEntity {
-            val direction = when {
-                a.direction == "ltr" -> 0
-                a.direction == "rtl" -> 1
-                else -> -1
-            }
+        fun getDbFromService(a: ServiceArticle): ArticleEntity {
+            val direction = 0 //0 is ltr
+
+            val dateFormat = SimpleDateFormat("yyyy-dd-MM hh:mm:ss", Locale("en"))
+            val pubDate = dateFormat.parse(a.publish_date)
+
             return ArticleEntity(title = a.title, link = a.url,
-                    description = a.excerpt, conents = a.content,
+                    description = a.summary, conents = a.body,
                     baseImageUrl = a.leadImageUrl, guid = a.url,
-                    pubDate = a.pubDate, source = a.domain,
+                    pubDate = pubDate, source = a.source_url,
                     layoutDirection = direction, wordCount = a.word_count)
 
         }

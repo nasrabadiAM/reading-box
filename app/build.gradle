@@ -25,6 +25,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
+
     compileSdkVersion build_versions.target_sdk
     buildToolsVersion build_versions.build_tools
 
@@ -47,6 +48,7 @@ android {
             }
         }
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -58,11 +60,13 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
         sourceCompatibility JavaVersion.VERSION_1_8
     }
+
     sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/debug/assets/'] } }
 }
 
 
 dependencies {
+
     //ui
     implementation deps.kotlin.stdlib
     implementation deps.support.app_compat
@@ -98,7 +102,7 @@ dependencies {
     androidTestImplementation deps.atsl.runner
     androidTestImplementation deps.atsl.rules
     androidTestImplementation deps.espresso.core
-    androidTestImplementation deps.robolectric.core
+    androidTestImplementation deps.mockito.all
 
     //memory-leak
     debugImplementation deps.leakcanary.debug

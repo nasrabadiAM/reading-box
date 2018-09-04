@@ -21,32 +21,29 @@ package com.nasrabadiam.readingbox.data.network
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
-data class MercuryArticle(
+data class ServiceArticle(
         @SerializedName("title")
         val title: String,
-        @SerializedName("content")
-        val content: String,
-        @SerializedName("date_published")
-        val pubDate: Date,
-        @SerializedName("lead_image_url")
+        @SerializedName("summary")
+        val summary: String,
+        @SerializedName("body")
+        val body: String,
+        @SerializedName("top_image")
         val leadImageUrl: String,
-        @SerializedName("dek")
-        val dek: String,
+        @SerializedName("authors")
+        val authors: List<String>,
+        @SerializedName("publish_date")
+        val publish_date: String,
         @SerializedName("url")
         val url: String,
-        @SerializedName("domain")
-        val domain: String,
-        @SerializedName("excerpt")
-        val excerpt: String,
-        @SerializedName("word_count")
+        @SerializedName("source_url")
+        val source_url: String,
+        @SerializedName("words_count")
         val word_count: Int,
-        @SerializedName("direction")
-        val direction: String,
-        @SerializedName("total_pages")
-        val total_pages: String,
-        @SerializedName("rendered_pages")
-        val rendered_pages: String,
-        @SerializedName("next_page_url")
-        val next_page_url: String
-
+        @SerializedName("keywords")
+        val keywords: List<String>,
+        @SerializedName("tags")
+        val tags: List<String>,
+        @SerializedName("lang")
+        val lang: String
 )

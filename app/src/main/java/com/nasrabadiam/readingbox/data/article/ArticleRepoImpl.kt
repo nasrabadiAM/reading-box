@@ -22,7 +22,7 @@ import com.nasrabadiam.readingbox.article.domain.Article
 import com.nasrabadiam.readingbox.article.domain.CallBack
 import com.nasrabadiam.readingbox.data.LocalDataSource
 import com.nasrabadiam.readingbox.data.RemoteDataSource
-import com.nasrabadiam.readingbox.data.network.MercuryArticle
+import com.nasrabadiam.readingbox.data.network.ServiceArticle
 import kotlinx.coroutines.experimental.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -46,13 +46,13 @@ class ArticleRepoImpl(localDataSource: LocalDataSource,
 
     override fun addArticle(link: String, callback: CallBack<Article>) {
         val call = remoteSource.article.getArticleDetails(link)
-        call.enqueue(object : Callback<MercuryArticle> {
-            override fun onResponse(call: Call<MercuryArticle>, response: Response<MercuryArticle>) {
+        call.enqueue(object : Callback<List<ServiceArticle>> {
+            override fun onResponse(call: Call<List<ServiceArticle>>, response: Response<List<ServiceArticle>>) {
                 when {
-
-                    response.isSuccessful && response.body() != null -> {
+                    response.isSuccessful && response.body() != null
+                            && response.body()!!.isNotEmpty() -> {
                         val articleEntity =
-                                ArticleConverter.getDbFromMercury(response.body()!!)
+                                ArticleConverter.getDbFromService(response.body()!![0])
                         launch {
                             appDatabase.articleDao().addArticle(articleEntity)
                         }
@@ -63,7 +63,7 @@ class ArticleRepoImpl(localDataSource: LocalDataSource,
                 }
             }
 
-            override fun onFailure(call: Call<MercuryArticle>, t: Throwable) {
+            override fun onFailure(call: Call<List<ServiceArticle>>, t: Throwable) {
                 callback.onFail()
             }
         })
