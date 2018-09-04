@@ -1,5 +1,5 @@
 /*
- *     This is the source code of ReadingBox project.
+ *     This is the source code of reading-box project.
  *     Copyright (C)   Ali Nasrabadi  2018-2018
  *
  *     This program is free software: you can redistribute it and/or modify
@@ -16,27 +16,21 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nasrabadiam.readingbox
+package com.nasrabadiam.readingbox.data.db
 
-import android.support.test.InstrumentationRegistry
-import android.support.test.runner.AndroidJUnit4
+import android.arch.persistence.room.TypeConverter
+import java.util.*
 
-import org.junit.Test
-import org.junit.runner.RunWith
+class Converters {
 
-import org.junit.Assert.*
-
-/**
- * Instrumented test, which will execute on an Android device.
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
-@RunWith(AndroidJUnit4::class)
-class ExampleInstrumentedTest {
-    @Test
-    fun useAppContext() {
-        // Context of the app under test.
-        val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("com.nasrabadiam.readingbox", appContext.packageName)
+    @TypeConverter
+    fun fromTimestamp(value: Long?): Date? {
+        return if (value == null) null else Date(value)
     }
+
+    @TypeConverter
+    fun dateToTimestamp(date: Date?): Long? {
+        return date?.time
+    }
+
 }

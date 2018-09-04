@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~     This is the source code of ReadingBox project.
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~     This is the source code of reading-box project.
   ~     Copyright (C)   Ali Nasrabadi  2018-2018
   ~
   ~     This program is free software: you can redistribute it and/or modify
@@ -17,9 +16,9 @@
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="listItemBackGround">#cecece</color>
-</resources>
+<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/recycler_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+</android.support.v7.widget.RecyclerView>

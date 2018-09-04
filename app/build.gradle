@@ -22,7 +22,10 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
+
     compileSdkVersion build_versions.target_sdk
     buildToolsVersion build_versions.build_tools
 
@@ -34,7 +37,18 @@ android {
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+        kotlin {
+            experimental {
+                coroutines "enable"
+            }
+        }
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -46,17 +60,51 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
         sourceCompatibility JavaVersion.VERSION_1_8
     }
+
+    sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/debug/assets/'] } }
 }
 
+
 dependencies {
+
+    //ui
     implementation deps.kotlin.stdlib
     implementation deps.support.app_compat
     implementation deps.constraint_layout
+    implementation deps.support.recyclerview
+    implementation deps.support.design
 
+    //image loading
+    implementation deps.picasso
+
+    //Room ORM
+    implementation deps.room.runtime
+    kapt deps.room.compiler
+    implementation deps.room.testing
+
+    //coroutines
+    implementation deps.coroutines.core
+    implementation deps.coroutines.android
+
+    //Dagger 2
+    implementation deps.dagger.runtime
+    kapt deps.dagger.compiler
+
+    //web request
+    implementation deps.retrofit.runtime
+    implementation deps.retrofit.gson
+    implementation deps.retrofit.mock
+    implementation deps.okhttp_logging_interceptor
+
+    //testing
     testImplementation deps.junit
     androidTestImplementation deps.support.annotations
     androidTestImplementation deps.atsl.runner
     androidTestImplementation deps.atsl.rules
     androidTestImplementation deps.espresso.core
-    androidTestImplementation deps.robolectric.core
+    androidTestImplementation deps.mockito.all
+
+    //memory-leak
+    debugImplementation deps.leakcanary.debug
+    debugImplementation deps.leakcanary.debugfragment
 }

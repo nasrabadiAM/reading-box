@@ -1,5 +1,5 @@
 /*
- *     This is the source code of ReadingBox project.
+ *     This is the source code of reading-box project.
  *     Copyright (C)   Ali Nasrabadi  2018-2018
  *
  *     This program is free software: you can redistribute it and/or modify
@@ -16,19 +16,25 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nasrabadiam.readingbox
+package com.nasrabadiam.readingbox.data.db.article
 
-import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import com.nasrabadiam.readingbox.article.ArticleDetailActivity
+import android.arch.persistence.room.Dao
+import android.arch.persistence.room.Insert
+import android.arch.persistence.room.OnConflictStrategy
+import android.arch.persistence.room.Query
 
-class MainActivity : AppCompatActivity() {
+@Dao
+interface ArticleDao {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        val intent = ArticleDetailActivity.getCallingIntent(this,
-                "https://www.google.com/")
-        startActivity(intent)
-    }
+    @Query("SELECT * FROM article ORDER BY pub_date DESC")
+    fun getAllArticles(): List<ArticleEntity>
+
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    fun addArticle(vararg articles: ArticleEntity)
+
+    @Query("SELECT * FROM article WHERE _id=:id")
+    fun getArticle(id: Int): ArticleEntity
+
+    @Query("DELETE FROM article WHERE _id=:id")
+    fun removeArticle(vararg id: Int):Int
 }

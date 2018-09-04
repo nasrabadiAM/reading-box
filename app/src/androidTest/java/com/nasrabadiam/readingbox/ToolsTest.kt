@@ -1,5 +1,5 @@
 /*
- *     This is the source code of ReadingBox project.
+ *     This is the source code of reading-box project.
  *     Copyright (C)   Ali Nasrabadi  2018-2018
  *
  *     This program is free software: you can redistribute it and/or modify
@@ -18,17 +18,27 @@
 
 package com.nasrabadiam.readingbox
 
-import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import com.nasrabadiam.readingbox.article.ArticleDetailActivity
+import android.support.test.runner.AndroidJUnit4
+import org.junit.Assert
+import org.junit.Test
+import org.junit.runner.RunWith
 
-class MainActivity : AppCompatActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        val intent = ArticleDetailActivity.getCallingIntent(this,
-                "https://www.google.com/")
-        startActivity(intent)
+@RunWith(AndroidJUnit4::class)
+class ToolsTest {
+
+    private val validUrl = "http://google.com"
+    private val inValidUrl = "bla bla"
+
+    @Test
+    fun testCorrectUrlIsValid() {
+        val result = validUrl.isUrlValid()
+        Assert.assertTrue(result)
+    }
+
+    @Test
+    fun testInCorrectUrlIsInValid() {
+        val result = inValidUrl.isUrlValid()
+        Assert.assertFalse(result)
     }
 }

@@ -1,5 +1,5 @@
 /*
- *     This is the source code of ReadingBox project.
+ *     This is the source code of reading-box project.
  *     Copyright (C)   Ali Nasrabadi  2018-2018
  *
  *     This program is free software: you can redistribute it and/or modify
@@ -16,19 +16,25 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.nasrabadiam.readingbox
+package com.nasrabadiam.readingbox.article.domain
 
-import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import com.nasrabadiam.readingbox.article.ArticleDetailActivity
+import com.nasrabadiam.readingbox.data.Repository
 
-class MainActivity : AppCompatActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        val intent = ArticleDetailActivity.getCallingIntent(this,
-                "https://www.google.com/")
-        startActivity(intent)
+class ArticleModelImpl(private val repo: Repository) : ArticleModel {
+    override fun getAll(): List<Article> {
+        return repo.articleRepo.getAll()
     }
+
+    override fun get(id: Int): Article {
+        return repo.articleRepo.get(id)
+    }
+
+    override fun addArticle(link: String, callback: CallBack<Article>) {
+        repo.articleRepo.addArticle(link, callback)
+    }
+
+    override fun remove(id: Int, callback: CallBack<Int>) {
+        repo.articleRepo.remove(id,callback)
+    }
+
 }
